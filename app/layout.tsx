@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Josefin_Sans } from 'next/font/google'
 import './globals.css'
+import { Providers } from './providers/providers'
 
 const josefinSans = Josefin_Sans({
 	subsets: ['latin'],
@@ -12,10 +13,14 @@ export const metadata: Metadata = {
 	description: 'A simple gallery app using Unsplash API',
 }
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+export default function RootLayout({
+	children,
+}: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang='en'>
-			<body className={`${josefinSans.className} antialiased`}>{children}</body>
+			<body className={`${josefinSans.className} antialiased`}>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	)
 }

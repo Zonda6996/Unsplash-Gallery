@@ -7,11 +7,14 @@ interface ImageCardProps {
 
 const ImageCard = ({ img }: ImageCardProps) => {
 	return (
-		<div className='mb-6 break-inside-avoid relative group cursor-pointer'>
+		<div
+			style={{ backgroundColor: img.color }}
+			className='mb-6 break-inside-avoid relative group cursor-pointer'
+		>
 			<Image
 				className='w-full h-auto object-cover'
 				src={img.urls.regular}
-				alt={img.alt_description}
+				alt={img.alt_description || `Photo by ${img.user.name} on Unsplash`}
 				width={500}
 				height={750}
 				sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'

@@ -1,10 +1,20 @@
 import { UnsplashPhoto, UnsplashSearchResponse } from '@/types/unsplash'
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
-const fetchImages = async (query: string): Promise<UnsplashSearchResponse> => {
+// const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+const fetchImages = async ({
+	query,
+	pageParam = 1,
+}: {
+	query: string
+	pageParam: number
+}): Promise<UnsplashSearchResponse> => {
+	// await delay(300000)
+
 	const url = query
-		? `https://api.unsplash.com/search/photos?query=${query}&per_page=20`
-		: `https://api.unsplash.com/photos?&per_page=20`
+		? `https://api.unsplash.com/search/photos?query=${query}&per_page=20&page=${pageParam}`
+		: `https://api.unsplash.com/photos?&per_page=20&page=${pageParam}`
 
 	const response = await fetch(url, {
 		method: 'GET',
@@ -25,16 +35,29 @@ const fetchImages = async (query: string): Promise<UnsplashSearchResponse> => {
 		const images = rawData as UnsplashPhoto[]
 		return {
 			results: images,
-			total: images.length,
-			total_pages: 1,
+			total: 10000,
+			total_pages: 500,
+			nextPage: pageParam,
 		}
 	}
 }
 
 export const useSearchImages = (searchQuery: string) => {
-	return useQuery<UnsplashSearchResponse, Error>({
+	return useInfiniteQuery<UnsplashSearchResponse, Error>({
 		queryKey: ['images', searchQuery || 'default'],
+		initialPageParam: 1,
 
-		queryFn: () => fetchImages(searchQuery),
+		queryFn: ({ pageParam }) =>
+			fetchImages({ query: searchQuery, pageParam: pageParam as number }),
+
+		getNextPageParam: (lastPage, pages) => {
+			const nextPage = pages.length + 1
+
+			if (nextPage > lastPage.total_pages) {
+				return undefined
+			}
+
+			return nextPage
+		},
 	})
 }

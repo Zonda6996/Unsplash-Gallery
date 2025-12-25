@@ -12,10 +12,12 @@ export interface UnsplashPhoto {
 			medium: string
 		}
 	}
+	color: string
 }
 
 export interface UnsplashSearchResponse {
 	total: number
 	total_pages: number
 	results: UnsplashPhoto[]
+	nextPage: number
 }

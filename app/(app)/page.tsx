@@ -31,8 +31,6 @@ export default function Home() {
 		delay: 100,
 	})
 
-	console.log(toggleLayout)
-
 	useEffect(() => {
 		if (!inView) return
 		if (!hasNextPage) return

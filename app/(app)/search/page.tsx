@@ -45,8 +45,6 @@ function SearchPage() {
 		fetchNextPage()
 	}, [inView, hasNextPage, fetchNextPage])
 
-	console.log(data)
-
 	return (
 		<div className='flex flex-col'>
 			<div className='flex flex-col items-center'>

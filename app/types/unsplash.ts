@@ -3,8 +3,14 @@ export interface UnsplashPhoto {
 	urls: {
 		regular: string
 		small: string
+		full: string
 	}
 	alt_description: string
+	likes: number
+	links: {
+		download: string
+		html: string
+	}
 	user: {
 		name: string
 
